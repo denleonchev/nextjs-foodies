@@ -1,12 +1,16 @@
+import { ImageSlideshow } from "@/components/image-slideshow";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
   return (
     <>
-      <header className="">
-        <div className="max-w-1/2 my-5 ml-auto">
-          <h1 className="bg-linear-to-r from-amber-900 to-amber-500 bg-clip-text text-transparent text-3xl font-extrabold">
+      <header className="flex flex-col md:flex-row gap-6 my-10 px-4 md:px-8">
+        <div className="md:w-1/2 h-50">
+          <ImageSlideshow />
+        </div>
+        <div className="md:w-1/2 flex flex-col justify-center items-center">
+          <h1 className="bg-linear-to-r from-amber-900 to-amber-500 bg-clip-text text-transparent text-3xl font-extrabold text-center">
             NextLevel Food for NextLevel Foodies
           </h1>
           <p className="mt-4">Taste & share food from all over the world</p>
@@ -26,7 +30,7 @@ export default function Home() {
           </div>
         </div>
       </header>
-      <main className="mt-10">
+      <main className="mt-10  px-4 md:px-8">
         <section>
           <h2 className="my-6 font-extrabold text-center">How it works</h2>
           <p className="my-4 text-center">
