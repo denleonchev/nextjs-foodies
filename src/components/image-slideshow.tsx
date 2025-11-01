@@ -19,26 +19,26 @@ const images = [
     image: burgerImg,
     alt: "A delicious burger",
   },
-  // {
-  //   image: curryImg,
-  //   alt: "A delicious curry",
-  // },
-  // {
-  //   image: dumplingsImg,
-  //   alt: "Steamed dumplings",
-  // },
-  // {
-  //   image: macAndCheeseImg,
-  //   alt: "Mac and cheese",
-  // },
-  // {
-  //   image: pizzaImg,
-  //   alt: "A delicious pizza",
-  // },
-  // {
-  //   image: schnitzelImg,
-  //   alt: "A delicious schnitzel",
-  // },
+  {
+    image: curryImg,
+    alt: "A delicious curry",
+  },
+  {
+    image: dumplingsImg,
+    alt: "Steamed dumplings",
+  },
+  {
+    image: macAndCheeseImg,
+    alt: "Mac and cheese",
+  },
+  {
+    image: pizzaImg,
+    alt: "A delicious pizza",
+  },
+  {
+    image: schnitzelImg,
+    alt: "A delicious schnitzel",
+  },
 ];
 
 export const ImageSlideshow = () => {
