@@ -9,7 +9,7 @@
     "lint": "eslint --cache --fix",
     "format": "prettier . --write",
     "prepare": "husky install",
-    "db:seed": "ts-node --project tsconfig.local.json initdb.ts"
+    "db:seed": "ts-node --project tsconfig.local.json src/lib/initdb.ts"
   },
   "dependencies": {
     "better-sqlite3": "^12.4.1",

@@ -1,8 +1,9 @@
 import sql from "better-sqlite3";
+import { MealDataType } from "./types";
 
 const db = sql("meals.db");
 
-const dummyMeals = [
+const dummyMeals: Omit<MealDataType, "id">[] = [
   {
     title: "Juicy Cheese Burger",
     slug: "juicy-cheese-burger",
