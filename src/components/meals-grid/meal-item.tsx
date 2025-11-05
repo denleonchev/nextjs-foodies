@@ -11,7 +11,7 @@ export const MealItem = ({
   slug,
   image,
 }: MealItemProps) => (
-  <article className="bg-amber-950 rounded-2xl">
+  <article className="flex flex-col bg-amber-950 rounded-2xl">
     <header>
       <Image
         className="max-w-full w-full h-[150px] rounded-t-2xl object-cover"
@@ -25,11 +25,11 @@ export const MealItem = ({
         <p className="mt-2">by {creator}</p>
       </div>
     </header>
-    <section className="p-2">
+    <section className="flex flex-col flex-1 p-2">
       <p>{summary}</p>
-      <div className="mt-2">
+      <div className="flex justify-end items-end flex-1 mt-2">
         <Link
-          className="inline-block p-2 rounded-lg bg-linear-to-r from-amber-700 to-amber-400"
+          className="p-2 rounded-lg bg-linear-to-r from-amber-700 to-amber-400"
           href={`/meals/${slug}`}
         >
           View Details
