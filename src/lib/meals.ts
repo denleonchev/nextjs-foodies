@@ -1,0 +1,29 @@
+import sql from "better-sqlite3";
+import { setTimeout } from "timers/promises";
+import { MealDataType, MealViewType } from "@/lib/types";
+
+const db = sql("meals.db");
+
+function mapMealDataToView(mealData: MealDataType) {
+  return {
+    id: mealData.id,
+    title: mealData.title,
+    creator: mealData.creator,
+    summary: mealData.summary,
+    slug: mealData.slug,
+    image: mealData.image,
+    instructions: mealData.instructions,
+    creatorEmail: mealData.creator_email,
+  };
+}
+
+function mapMealsDataToView(mealsData: MealDataType[]) {
+  return mealsData.map(mapMealDataToView);
+}
+
+export async function getMeals(): Promise<MealViewType[]> {
+  await setTimeout(2000);
+  const mealsData = db.prepare("SELECT * from meals").all() as MealDataType[];
+
+  return mapMealsDataToView(mealsData);
+}
