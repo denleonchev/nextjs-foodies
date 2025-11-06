@@ -24,6 +24,6 @@ function mapMealsDataToView(mealsData: MealDataType[]) {
 export async function getMeals(): Promise<MealViewType[]> {
   await setTimeout(2000);
   const mealsData = db.prepare("SELECT * from meals").all() as MealDataType[];
-
+  // throw new Error("Problems, sir!");
   return mapMealsDataToView(mealsData);
 }
