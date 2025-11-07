@@ -27,3 +27,16 @@ export async function getMeals(): Promise<MealViewType[]> {
   // throw new Error("Problems, sir!");
   return mapMealsDataToView(mealsData);
 }
+
+export async function getMeal(slug: string): Promise<MealViewType | null> {
+  await setTimeout(2000);
+  const mealData = db
+    .prepare("SELECT * from meals where slug = ?")
+    .get(slug) as unknown as MealDataType | null;
+  // throw new Error("Problems, sir!");
+  if (!mealData) {
+    return mealData;
+  }
+
+  return mapMealDataToView(mealData);
+}
