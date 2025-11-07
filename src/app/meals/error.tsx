@@ -1,6 +1,6 @@
 "use client";
 
-export default async function MealsErrorPage({
+export default function MealsErrorPage({
   error,
 }: {
   error: Error & { digest?: string };
