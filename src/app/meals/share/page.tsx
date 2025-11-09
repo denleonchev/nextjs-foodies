@@ -1,3 +1,5 @@
+import ImagePicker from "@/components/image-picker";
+
 export default function ShareMealPage() {
   return (
     <>
@@ -64,7 +66,9 @@ export default function ShareMealPage() {
               required
             ></textarea>
           </p>
-          <p>IMAGE PICKER</p>
+          <div className="flex flex-col flex-1 gap-1">
+            <ImagePicker name="image" label="Image" />
+          </div>
           <p className="flex mt-2">
             <button
               className="ml-auto p-2 rounded-lg bg-linear-to-r from-amber-700 to-amber-400"
