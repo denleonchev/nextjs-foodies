@@ -11,7 +11,7 @@ export const MealItem = ({
   slug,
   image,
 }: MealItemProps) => (
-  <article className="flex flex-col bg-amber-950 rounded-2xl">
+  <article className="flex flex-col flex-1 bg-amber-950 rounded-2xl">
     <header>
       <Image
         className="max-w-full w-full h-[150px] rounded-t-2xl object-cover"
