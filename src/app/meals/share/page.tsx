@@ -1,4 +1,5 @@
-import ImagePicker from "@/components/image-picker";
+import ImagePicker from "@/components/share-meals/image-picker";
+import MealSubmitButton from "@/components/share-meals/submit-button";
 import { createMealAction } from "@/lib/action";
 
 export default function ShareMealPage() {
@@ -74,12 +75,7 @@ export default function ShareMealPage() {
             <ImagePicker name="image" label="Image" />
           </div>
           <p className="flex mt-2">
-            <button
-              className="ml-auto p-2 rounded-lg bg-linear-to-r from-amber-700 to-amber-400"
-              type="submit"
-            >
-              Share Meal
-            </button>
+            <MealSubmitButton />
           </p>
         </form>
       </main>
