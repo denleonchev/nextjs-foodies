@@ -1,6 +1,9 @@
 import sql from "better-sqlite3";
 import { setTimeout } from "timers/promises";
+import slugify from "slugify";
+import xss from "xss";
 import { MealDataType, MealViewType } from "@/lib/types";
+import { getImageFileServePath, saveImageFile } from "./utils";
 
 const db = sql("meals.db");
 
@@ -39,4 +42,46 @@ export async function getMeal(slug: string): Promise<MealViewType | null> {
   }
 
   return mapMealDataToView(mealData);
+}
+
+type SaveMealPayload = {
+  title: string;
+  summary: string;
+  instructions: string;
+  image: File;
+  name: string;
+  email: string;
+};
+
+export async function saveMeal(saveMealPayload: SaveMealPayload) {
+  const slug = slugify(saveMealPayload.title);
+  const instructions = xss(saveMealPayload.instructions);
+
+  const extention = saveMealPayload.image.name.split(".").pop();
+  const fileName = `${slug}.${extention}`;
+  await saveImageFile(fileName, saveMealPayload.image);
+
+  db.prepare(
+    `
+    INSERT INTO meals
+    (title, summary, instructions, creator, creator_email, image, slug)
+    VALUES(
+      @title,
+      @summary,
+      @instructions,
+      @creator,
+      @creator_email,
+      @image,
+      @slug
+    )
+  `,
+  ).run({
+    title: saveMealPayload.title,
+    summary: saveMealPayload.summary,
+    instructions,
+    creator: saveMealPayload.name,
+    creator_email: saveMealPayload.email,
+    image: getImageFileServePath(fileName),
+    slug,
+  });
 }

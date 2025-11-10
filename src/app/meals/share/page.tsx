@@ -1,4 +1,5 @@
 import ImagePicker from "@/components/image-picker";
+import { createMealAction } from "@/lib/action";
 
 export default function ShareMealPage() {
   return (
@@ -13,7 +14,10 @@ export default function ShareMealPage() {
         <p className="mt-5">Or any other meal you feel needs sharing!</p>
       </header>
       <main className="p-4 md:p-8">
-        <form className="md:max-w-3/4 flex flex-col gap-3">
+        <form
+          className="md:max-w-3/4 flex flex-col gap-3"
+          action={createMealAction}
+        >
           <div className="flex flex-row gap-4">
             <p className="flex flex-col flex-1 gap-1">
               <label htmlFor="name">Your name</label>
