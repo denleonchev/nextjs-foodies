@@ -22,9 +22,18 @@ const saveMealPayloadSchema = z.object({
   email: nonemptyString,
 });
 
-export async function createMealAction(formData: FormData) {
-  const file = formData.get("image");
-  const createMealPayload = saveMealPayloadSchema.parse({
+type SaveMealPayloadSchemaType = z.infer<typeof saveMealPayloadSchema>;
+
+type PrevStateType = {
+  errors: z.ZodError<SaveMealPayloadSchemaType>["issues"];
+  formData: FormData;
+};
+
+export async function createMealAction(
+  prevState: PrevStateType,
+  formData: FormData,
+) {
+  const createMealPayload = saveMealPayloadSchema.safeParse({
     title: formData.get("title"),
     summary: formData.get("summary"),
     instructions: formData.get("instructions"),
@@ -33,6 +42,13 @@ export async function createMealAction(formData: FormData) {
     email: formData.get("email"),
   });
 
-  await saveMeal(createMealPayload);
+  if (!createMealPayload.success) {
+    return {
+      errors: createMealPayload.error.issues,
+      formData,
+    };
+  }
+
+  await saveMeal(createMealPayload.data);
   redirect("/meals");
 }
