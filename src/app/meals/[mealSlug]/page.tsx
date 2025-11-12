@@ -1,6 +1,16 @@
-import { getMeal } from "@/lib/meals";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { getMeal } from "@/lib/meals";
+
+export async function generateMetadata(props: PageProps<"/meals/[mealSlug]">) {
+  const { mealSlug } = await props.params;
+  const meal = await getMeal(mealSlug);
+
+  return {
+    title: meal?.title,
+    description: meal?.summary,
+  };
+}
 
 export default async function MealDetailsPage(
   props: PageProps<"/meals/[mealSlug]">,
@@ -19,8 +29,8 @@ export default async function MealDetailsPage(
 
   return (
     <>
-      <header className="flex flex-col px-4 md:px-8 mt-10 gap-10">
-        <div className="relative md:basis-1/2 grow-0 h-60">
+      <header className="flex flex-col px-4 items-center md:px-8 mt-10 gap-10">
+        <div className="relative md:w-1/2 grow-0 h-60">
           <Image
             className="rounded-xl object-cover"
             src={meal.image}

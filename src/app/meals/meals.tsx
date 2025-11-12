@@ -1,5 +1,11 @@
+import { Metadata } from "next";
 import { MealsGrid } from "@/components/meals-grid";
 import { getMeals } from "@/lib/meals";
+
+export const metadata: Metadata = {
+  title: "All meals",
+  description: "Browse delicious meals shared by our vibrant community.",
+};
 
 export async function Meals() {
   const meals = await getMeals();
