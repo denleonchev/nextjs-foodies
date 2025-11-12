@@ -1,13 +1,38 @@
 import sql from "better-sqlite3";
+import fs, { readFile } from "fs/promises";
+import path from "path";
+import { mapLimit } from "async";
 import { MealDataType } from "./types";
+import { saveImageFile } from "./imageFile";
 
 const db = sql("meals.db");
+
+async function uploadDummyImages() {
+  const imagesDirectory = "./src/assets/images";
+  const fileNames = await fs.readdir(imagesDirectory);
+  const savedFilesUrls = await mapLimit<string, string>(
+    fileNames,
+    5,
+    async (fileName: string) => {
+      const filePath = path.resolve(imagesDirectory, fileName);
+      const fileContent = await readFile(filePath);
+      return await saveImageFile(fileContent);
+    },
+  );
+
+  return Object.fromEntries(
+    fileNames.map((fileName, fileNameIndex) => [
+      fileName,
+      savedFilesUrls[fileNameIndex],
+    ]),
+  );
+}
 
 const dummyMeals: Omit<MealDataType, "id">[] = [
   {
     title: "Juicy Cheese Burger",
     slug: "juicy-cheese-burger",
-    image: "/images/burger.jpg",
+    image: "burger.jpg",
     summary:
       "A mouth-watering burger with a juicy beef patty and melted cheese, served in a soft bun.",
     instructions: `
@@ -29,7 +54,7 @@ const dummyMeals: Omit<MealDataType, "id">[] = [
   {
     title: "Spicy Curry",
     slug: "spicy-curry",
-    image: "/images/curry.jpg",
+    image: "curry.jpg",
     summary:
       "A rich and spicy curry, infused with exotic spices and creamy coconut milk.",
     instructions: `
@@ -54,7 +79,7 @@ const dummyMeals: Omit<MealDataType, "id">[] = [
   {
     title: "Homemade Dumplings",
     slug: "homemade-dumplings",
-    image: "/images/dumplings.jpg",
+    image: "dumplings.jpg",
     summary:
       "Tender dumplings filled with savory meat and vegetables, steamed to perfection.",
     instructions: `
@@ -76,7 +101,7 @@ const dummyMeals: Omit<MealDataType, "id">[] = [
   {
     title: "Classic Mac n Cheese",
     slug: "classic-mac-n-cheese",
-    image: "/images/macncheese.jpg",
+    image: "macncheese.jpg",
     summary:
       "Creamy and cheesy macaroni, a comforting classic that's always a crowd-pleaser.",
     instructions: `
@@ -101,7 +126,7 @@ const dummyMeals: Omit<MealDataType, "id">[] = [
   {
     title: "Authentic Pizza",
     slug: "authentic-pizza",
-    image: "/images/pizza.jpg",
+    image: "pizza.jpg",
     summary:
       "Hand-tossed pizza with a tangy tomato sauce, fresh toppings, and melted cheese.",
     instructions: `
@@ -123,7 +148,7 @@ const dummyMeals: Omit<MealDataType, "id">[] = [
   {
     title: "Wiener Schnitzel",
     slug: "wiener-schnitzel",
-    image: "/images/schnitzel.jpg",
+    image: "schnitzel.jpg",
     summary:
       "Crispy, golden-brown breaded veal cutlet, a classic Austrian dish.",
     instructions: `
@@ -145,7 +170,7 @@ const dummyMeals: Omit<MealDataType, "id">[] = [
   {
     title: "Fresh Tomato Salad",
     slug: "fresh-tomato-salad",
-    image: "/images/tomato-salad.jpg",
+    image: "tomato-salad.jpg",
     summary:
       "A light and refreshing salad with ripe tomatoes, fresh basil, and a tangy vinaigrette.",
     instructions: `
@@ -182,6 +207,11 @@ db.prepare(
 ).run();
 
 async function initData() {
+  const uploadedImagesMap = await uploadDummyImages();
+  const dummyMealsWithImageURL = dummyMeals.map((dummyMeal) => ({
+    ...dummyMeal,
+    image: uploadedImagesMap[dummyMeal.image],
+  }));
   const stmt = db.prepare(`
       INSERT INTO meals VALUES (
          null,
@@ -194,8 +224,7 @@ async function initData() {
          @creator_email
       )
    `);
-
-  for (const meal of dummyMeals) {
+  for (const meal of dummyMealsWithImageURL) {
     stmt.run(meal);
   }
 }

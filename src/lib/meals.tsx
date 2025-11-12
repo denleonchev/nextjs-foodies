@@ -3,7 +3,7 @@ import { setTimeout } from "timers/promises";
 import slugify from "slugify";
 import xss from "xss";
 import { MealDataType, MealViewType } from "@/lib/types";
-import { getImageFileServePath, saveImageFile } from "./utils";
+import { saveImageFile } from "./imageFile";
 
 const db = sql("meals.db");
 
@@ -59,7 +59,10 @@ export async function saveMeal(saveMealPayload: SaveMealPayload) {
 
   const extention = saveMealPayload.image.name.split(".").pop();
   const fileName = `${slug}.${extention}`;
-  await saveImageFile(fileName, saveMealPayload.image);
+
+  const fileContent = await saveMealPayload.image.arrayBuffer();
+  const fileContentBuffered = Buffer.from(fileContent);
+  const imageURL = await saveImageFile(fileContentBuffered);
 
   db.prepare(
     `
@@ -81,7 +84,7 @@ export async function saveMeal(saveMealPayload: SaveMealPayload) {
     instructions,
     creator: saveMealPayload.name,
     creator_email: saveMealPayload.email,
-    image: getImageFileServePath(fileName),
+    image: imageURL,
     slug,
   });
 }

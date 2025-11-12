@@ -9,11 +9,13 @@
     "lint": "eslint --cache --fix",
     "format": "prettier . --write",
     "prepare": "husky install",
-    "db:seed": "ts-node --project tsconfig.local.json src/lib/initdb.ts",
-    "debug": "npm run dev -- --inspect"
+    "db:seed": "ts-node -r ./src/lib/env.ts --project tsconfig.local.json ./src/lib/initdb.ts"
   },
   "dependencies": {
+    "async": "^3.2.6",
     "better-sqlite3": "^12.4.1",
+    "cloudinary": "^2.8.0",
+    "dotenv": "^17.2.3",
     "next": "16.0.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
@@ -23,6 +25,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/async": "^3.2.25",
     "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^20",
     "@types/react": "^19",
