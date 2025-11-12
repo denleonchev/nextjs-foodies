@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { saveMeal } from "./meals";
+import { revalidatePath } from "next/cache";
 
 const nonemptyString = z
   .string()
@@ -50,5 +51,6 @@ export async function createMealAction(
   }
 
   await saveMeal(createMealPayload.data);
+  revalidatePath("/meals");
   redirect("/meals");
 }
